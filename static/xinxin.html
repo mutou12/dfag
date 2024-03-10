@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2024-love</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 设置画布的 z-index 值 */
+        }
+        .text-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2; /* 设置文字容器的 z-index 值 */
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 1);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="text-container">
+        <p>馨馨我爱你</p>
+    </div>
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        const particles = [];
+
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+
+        function createParticle() {
+            const x = Math.random() * canvas.width;
+            const y = canvas.height;
+            const size = Math.random() * 50 + 20;
+            const speed = (Math.random() * 4 + 1);
+            const brightness = 0;
+            const isOpaque = Math.random() < 0.9; // 50% 的概率设置为不透明
+            const zIndex = particles.length;
+
+            const particle = { x, y, size, speed, brightness, isOpaque, zIndex };
+            particles.push(particle);
+        }
+
+        function updateParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                const particle = particles[i];
+                const distanceToCenter = Math.abs(particle.y - canvas.height / 2); // 计算粒子与垂直中心线的距离
+                const maxSpeed = 10;
+                const minSpeed = 0.5;
+                const speed = minSpeed + (maxSpeed - minSpeed) * (distanceToCenter / (canvas.height / 2));
+                particle.y -= speed;
+                particle.brightness = (1-(particle.size / 100)) * 100;
+
+                if (particle.y < -particle.size) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.sort((a, b) => a.zIndex - b.zIndex);
+
+            for (let i = 0; i < particles.length; i++) {
+                const particle = particles[i];
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                if (particle.isOpaque) {
+                    ctx.fillStyle = `hsl(0, 100%, ${particle.brightness}%)`;
+                } else {
+                    ctx.fillStyle = `hsla(0, 100%, ${particle.brightness}%, 0.5)`;
+                }
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            updateParticles();
+            drawParticles();
+            requestAnimationFrame(animate); // 使用requestAnimationFrame方法进行递归调用
+        }
+
+        // 每隔一段时间创建一个粒子
+        setInterval(createParticle, 60);
+
+        animate();
+    </script>
+</body>
+</html>

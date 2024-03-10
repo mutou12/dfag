@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>滑动触发粒子效果</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+        .text-container {
+			position: relative;
+			z-index: 0;
+			font-size: 4rem;
+			font-weight: bold;
+			color: #ffffff;
+			text-align: center;
+			text-shadow: 0 0 30px rgba(255, 255, 255, 1);
+		}
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+	<div class="text-container">
+		<p>馨馨我爱你</p>
+	</div>
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        const particles = [];
+
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+
+        let isTouching = false;
+
+        canvas.addEventListener('touchstart', function(e) {
+            isTouching = true;
+        });
+
+        canvas.addEventListener('touchend', function(e) {
+            isTouching = false;
+        });
+
+        canvas.addEventListener('touchmove', function(e) {
+            if (isTouching) {
+                const { touches } = e;
+                const touch = touches[0];
+                const { clientX, clientY } = touch;
+                createParticle(clientX, clientY);
+            }
+        });
+
+        function createParticle(x, y) {
+            const particle = {
+                x,
+                y,
+                size: Math.random() * 20 + 10,
+                speed: (Math.random() * 4 + 1),
+                brightness: 0
+            };
+            particles.push(particle);
+        }
+
+        function updateParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                const particle = particles[i];
+                particle.y -= particle.speed;
+                particle.brightness = (particle.size / 30) * 100;
+
+                if (particle.y < -particle.size) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const particle = particles[i];
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(0, 100%, ${particle.brightness}%)`;
+                ctx.fill();
+            }
+        }
+
+        function loop() {
+            updateParticles();
+            drawParticles();
+
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+    </script>
+</body>
+</html>
