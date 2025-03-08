@@ -2,13 +2,13 @@ import customtkinter as ctk
 from controllers import text_to_speech_controller
 
 class TextToSpeechFrame(ctk.CTkFrame):
-    def __init__(self, master):
-        super().__init__(master)
+    def __init__(self, master, switch_frame, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
         
         # 创建界面组件
-        self.create_widgets()
+        self.create_widgets(switch_frame)
     
-    def create_widgets(self):
+    def create_widgets(self, switch_frame):
         # 标题
         title_label = ctk.CTkLabel(self, text="文本转语音", font=("Microsoft YaHei", 24, "bold"))
         title_label.pack(pady=20)
@@ -48,6 +48,11 @@ class TextToSpeechFrame(ctk.CTkFrame):
         self.stop_button = ctk.CTkButton(button_frame, text="停止", font=("Microsoft YaHei", 14),
                                         command=self.stop_speaking)
         self.stop_button.pack(side="left", fill="x", expand=True, padx=10)
+        
+        # 返回主菜单按钮
+        back_button = ctk.CTkButton(button_frame, text="返回主菜单", font=("Microsoft YaHei", 14),
+                                    command=lambda: switch_frame("MainMenu"))
+        back_button.pack(side="left", fill="x", expand=True, padx=10)
         
         # 状态栏
         self.status_label = ctk.CTkLabel(self, text="就绪", font=("Microsoft YaHei", 10))

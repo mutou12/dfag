@@ -15,7 +15,7 @@ class MainMenu(ctk.CTkFrame):
         
         # 文本转语音按钮
         tts_button = ctk.CTkButton(self, text="文本转语音", font=("Microsoft YaHei", 14),
-                                   command=lambda: switch_frame(TextToSpeechFrame))
+                                   command=lambda: switch_frame("TextToSpeechFrame"))
         tts_button.pack(pady=10)
         
         # 其他功能按钮（占位）

@@ -19,24 +19,27 @@ class MainApp(ctk.CTk):
         self.frames = {}
         
         # 初始化页面
-        self.show_frame(MainMenu)
+        self.show_frame("MainMenu")
     
-    def show_frame(self, page_class):
+    def show_frame(self, page_name):
         # 销毁当前页面
         for frame in self.frames.values():
             frame.pack_forget()
         
         # 如果页面不存在，则创建它
-        if page_class not in self.frames:
-            frame = page_class(self.container, self.show_frame)
-            self.frames[page_class] = frame
+        if page_name not in self.frames:
+            if page_name == "MainMenu":
+                frame = MainMenu(self.container, self.show_frame)
+            elif page_name == "TextToSpeechFrame":
+                frame = TextToSpeechFrame(self.container, self.show_frame)
+            self.frames[page_name] = frame
         else:
-            frame = self.frames[page_class]
+            frame = self.frames[page_name]
         
         # 显示页面
         frame.pack(fill="both", expand=True)
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     app = MainApp()
     app.protocol("WM_DELETE_WINDOW", app.destroy)
     app.mainloop()
