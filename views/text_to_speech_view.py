@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from controllers import text_to_speech_controller
+import pygame
 
 class TextToSpeechFrame(ctk.CTkFrame):
     def __init__(self, master, switch_frame, *args, **kwargs):
@@ -7,6 +8,10 @@ class TextToSpeechFrame(ctk.CTkFrame):
         
         # 创建界面组件
         self.create_widgets(switch_frame)
+        
+        # 监听 pygame 事件
+        self.bind("<<PygameEvent>>", self.on_pygame_event)
+        self.after(100, self.check_pygame_event)
     
     def create_widgets(self, switch_frame):
         # 标题
@@ -69,8 +74,19 @@ class TextToSpeechFrame(ctk.CTkFrame):
         voice_name = self.voice_var.get()
         
         # 调用 text_to_speech_controller.py 中的 speak_text 函数
-        text_to_speech_controller.speak_text(self.status_label, text, voice_name)
+        text_to_speech_controller.speak_text(self.status_label, text, voice_name, self.speak_button)
     
     def stop_speaking(self):
         # 调用 text_to_speech_controller.py 中的 stop_speaking 函数
-        text_to_speech_controller.stop_speaking(self.status_label)
+        text_to_speech_controller.stop_speaking(self.status_label, self.speak_button)
+    
+    def check_pygame_event(self):
+        for event in pygame.event.get():
+            if event.type == pygame.USEREVENT:
+                self.event_generate("<<PygameEvent>>")
+        self.after(100, self.check_pygame_event)
+    
+    def on_pygame_event(self, event):
+        self.speak_button.configure(state="normal")
+        self.status_label.configure(text="播放完成")
+        pygame.event.clear(pygame.USEREVENT)  # 清除事件队列

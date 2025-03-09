@@ -7,7 +7,7 @@ class MainApp(ctk.CTk):
         super().__init__()
         
         # 窗口设置
-        self.title("主应用")
+        self.title("馨馨的智能助手")
         self.geometry("700x500")
         self.resizable(False, False)
         
