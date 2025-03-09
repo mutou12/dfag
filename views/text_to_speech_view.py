@@ -59,8 +59,17 @@ class TextToSpeechFrame(ctk.CTkFrame):
         self.status_label.pack(side="bottom", fill="x", padx=20, pady=10)
     
     def speak_text(self):
+        # 获取输入的文本
+        text = self.text_input.get("1.0", "end-1c").strip()
+        if not text:
+            self.status_label.configure(text="请输入文本")
+            return
+        
+        # 获取选择的语音名称
+        voice_name = self.voice_var.get()
+        
         # 调用 text_to_speech_controller.py 中的 speak_text 函数
-        text_to_speech_controller.speak_text(self.status_label)
+        text_to_speech_controller.speak_text(self.status_label, text, voice_name)
     
     def stop_speaking(self):
         # 调用 text_to_speech_controller.py 中的 stop_speaking 函数

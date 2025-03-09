@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from views.text_to_speech_view import TextToSpeechFrame
 
 class MainMenu(ctk.CTkFrame):
     def __init__(self, master, switch_frame):

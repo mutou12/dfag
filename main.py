@@ -18,6 +18,12 @@ class MainApp(ctk.CTk):
         # 存储所有的页面
         self.frames = {}
         
+        # 页面映射
+        self.page_classes = {
+            "MainMenu": MainMenu,
+            "TextToSpeechFrame": TextToSpeechFrame
+        }
+        
         # 初始化页面
         self.show_frame("MainMenu")
     
@@ -28,10 +34,8 @@ class MainApp(ctk.CTk):
         
         # 如果页面不存在，则创建它
         if page_name not in self.frames:
-            if page_name == "MainMenu":
-                frame = MainMenu(self.container, self.show_frame)
-            elif page_name == "TextToSpeechFrame":
-                frame = TextToSpeechFrame(self.container, self.show_frame)
+            page_class = self.page_classes[page_name]
+            frame = page_class(self.container, self.show_frame)
             self.frames[page_name] = frame
         else:
             frame = self.frames[page_name]
