@@ -16,6 +16,11 @@ class MainMenu(ctk.CTkFrame):
         tts_button = ctk.CTkButton(self, text="文本转语音", font=("Microsoft YaHei", 14),
                                    command=lambda: switch_frame("TextToSpeechFrame"))
         tts_button.pack(pady=10)
+
+        # 可视化进程/协程/线程按钮
+        visualization_button = ctk.CTkButton(self, text="可视化进程/协程/线程", font=("Microsoft YaHei", 14),
+                                             command=lambda: switch_frame("ProcessVisualizationFrame"))
+        visualization_button.pack(pady=10)
         
         # 其他功能按钮（占位）
         other_button = ctk.CTkButton(self, text="其他功能", font=("Microsoft YaHei", 14),

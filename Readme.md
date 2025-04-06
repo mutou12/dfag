@@ -24,5 +24,5 @@ Project_Code\
 在项目根目录下运行以下命令来启动程序：
 
 ```sh
-poetry run python dfag/main.py
+poetry run python dfag_code/main.py
 ```

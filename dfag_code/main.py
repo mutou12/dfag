@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from views.main_menu import MainMenu
 from views.text_to_speech_view import TextToSpeechFrame
+from views.process_visualization_view import ProcessVisualizationFrame
 
 class MainApp(ctk.CTk):
     def __init__(self):
@@ -21,7 +22,8 @@ class MainApp(ctk.CTk):
         # 页面映射
         self.page_classes = {
             "MainMenu": MainMenu,
-            "TextToSpeechFrame": TextToSpeechFrame
+            "TextToSpeechFrame": TextToSpeechFrame,
+            "ProcessVisualizationFrame": ProcessVisualizationFrame
         }
         
         # 初始化页面
